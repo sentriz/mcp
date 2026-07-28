@@ -46,8 +46,8 @@ args:
   a single json object or key=value pairs, where each value is
   parsed as json, falling back to a plain string:
 
-  mcp server linear call get_issue '{"id": "ABC-123"}'
   mcp server linear call get_issue id=ABC-123
+  mcp server linear call get_issue '{"id": "ABC-123"}'
   mcp server linear call list_issues limit=10 query="foo bar"
 
 config:
