@@ -3,6 +3,7 @@ name = "linear"
 transport = "http"
 url = "https://mcp.linear.app/mcp"
 headers = { Authorization = "Bearer ${exec secret linear_token}" }
+instructions = "my team is ABC, filter issues with team=ABC by default"
 
 [[server]]
 name = "dash0"

@@ -89,10 +89,12 @@ func main() {
 	case match(args, "server", &server, "daemon"):
 		err = runDaemon(ctx, server)
 	default:
-		err = errors.New("usage")
 		usage()
+		exit = 1
+		return
 	}
 	if err != nil {
+		log.Println(err)
 		exit = 1
 	}
 }
@@ -135,6 +137,13 @@ func listTools(ctx context.Context, server string) error {
 	}
 	for _, t := range tools {
 		fmt.Printf("%s\t%s\n", t.Name, t.Description)
+	}
+	srv, err := getServer(server)
+	if err != nil {
+		return err
+	}
+	if srv.Instructions != "" {
+		fmt.Printf("\n%s\n", strings.TrimSpace(srv.Instructions))
 	}
 	return nil
 }
@@ -691,6 +700,7 @@ type Server struct {
 	ClientID        string            `toml:"client_id"`
 	ClientSecret    string            `toml:"client_secret"`
 	AuthMetadataURL string            `toml:"auth_metadata_url"`
+	Instructions    string            `toml:"instructions"`
 }
 
 func loadConfig() (Config, error) {
