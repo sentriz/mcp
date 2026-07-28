@@ -565,10 +565,10 @@ func login(ctx context.Context, server string) error {
 	if !client.IsOAuthAuthorizationRequiredError(err) {
 		return err
 	}
-	return authorize(ctx, client.GetOAuthHandler(err))
+	return authorize(ctx, client.GetOAuthHandler(err), srv.AuthParams)
 }
 
-func authorize(ctx context.Context, h *transport.OAuthHandler) error {
+func authorize(ctx context.Context, h *transport.OAuthHandler, authParams map[string]string) error {
 	verifier, err := client.GenerateCodeVerifier()
 	if err != nil {
 		return err
@@ -588,6 +588,16 @@ func authorize(ctx context.Context, h *transport.OAuthHandler) error {
 	if err != nil {
 		return err
 	}
+	u, err := url.Parse(authURL)
+	if err != nil {
+		return err
+	}
+	q := u.Query()
+	for k, v := range authParams {
+		q.Set(k, v)
+	}
+	u.RawQuery = q.Encode()
+	authURL = u.String()
 
 	callback, err := awaitCallback(ctx, authURL)
 	if err != nil {
@@ -700,6 +710,7 @@ type Server struct {
 	ClientID        string            `toml:"client_id"`
 	ClientSecret    string            `toml:"client_secret"`
 	AuthMetadataURL string            `toml:"auth_metadata_url"`
+	AuthParams      map[string]string `toml:"auth_params"`
 	Instructions    string            `toml:"instructions"`
 }
 

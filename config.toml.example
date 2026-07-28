@@ -50,6 +50,7 @@ scopes = [
 client_id = "${exec secret google_mcp_client_id}"
 client_secret = "${exec secret google_mcp_client_secret}"
 auth_metadata_url = "https://accounts.google.com/.well-known/openid-configuration"
+auth_params = { access_type = "offline", prompt = "consent" }
 
 [[server]]
 name = "gcal"
@@ -63,3 +64,4 @@ scopes = [
 client_id = "${exec secret google_mcp_client_id}"
 client_secret = "${exec secret google_mcp_client_secret}"
 auth_metadata_url = "https://accounts.google.com/.well-known/openid-configuration"
+auth_params = { access_type = "offline", prompt = "consent" }
