@@ -135,15 +135,15 @@ func listTools(ctx context.Context, server string) error {
 	if err != nil {
 		return err
 	}
-	for _, t := range tools {
-		fmt.Printf("%s\t%s\n", t.Name, t.Description)
-	}
 	srv, err := getServer(server)
 	if err != nil {
 		return err
 	}
 	if srv.Instructions != "" {
-		fmt.Printf("\n%s\n", strings.TrimSpace(srv.Instructions))
+		fmt.Printf("%s\n\n", strings.TrimSpace(srv.Instructions))
+	}
+	for _, t := range tools {
+		fmt.Printf("%s\t%s\n", t.Name, t.Description)
 	}
 	return nil
 }
