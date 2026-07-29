@@ -388,6 +388,9 @@ func (d *daemon) handle(ctx context.Context, req rpcRequest) rpcResponse {
 		var creq mcp.CallToolRequest
 		creq.Params.Name = req.Tool
 		creq.Params.Arguments = req.Args
+		if req.Args == nil {
+			creq.Params.Arguments = map[string]any{}
+		}
 		res, err := c.CallTool(ctx, creq)
 		if err != nil {
 			return rpcResponse{Error: err.Error()}
